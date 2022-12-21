@@ -1,13 +1,17 @@
-import {Plugin, moment, TFile} from 'obsidian';
+import {Plugin, moment} from 'obsidian';
 
 import {FirebaseApp, FirebaseOptions, initializeApp} from 'firebase/app';
 import {getAuth} from "@firebase/auth";
 import {AuthModal} from "./src/AuthModal";
 import {StatusBar} from "./src/StatusBar";
 import {HintsSettingTab} from "./src/HintsSettingTab";
-import {collection, getFirestore, onSnapshot, where, query, deleteDoc, Timestamp, orderBy} from "@firebase/firestore";
+import {collection, getFirestore, onSnapshot, where, query, deleteDoc, orderBy} from "@firebase/firestore";
+import {PendingNote} from "./src/PendingNote";
+import {DailyNoteStrategy} from "./src/AppendStrategy/DailyNoteStrategy";
+import {AppendToFileStrategy} from "./src/AppendStrategy/AppendToFileStrategy";
 
 interface HintsSettings {
+    appendToDailyNote: boolean;
     appendPath: string | null,
     appendTemplate: string;
     dateFormat: string;
@@ -16,6 +20,7 @@ interface HintsSettings {
 }
 
 const DEFAULT_SETTINGS: HintsSettings = {
+    appendToDailyNote: false,
     appendPath: null,
     appendTemplate: '\n---\n#### {{date}}\n{{content}}',
     dateFormat: 'YYYY-MM-DD [at] HH:mm',
@@ -92,28 +97,23 @@ export default class HintsPlugin extends Plugin {
             orderBy('createdAt', 'asc')
         );
         this.pendingNotesUnsubscribe = onSnapshot(q, async (querySnapshot) => {
-            if (!this.settings.appendPath) {
-                return;
-            }
-            const appendFile = app.vault.getAbstractFileByPath(this.settings.appendPath);
-            if (!appendFile || !(appendFile instanceof TFile)) {
-                return;
-            }
             this.statusBar.updateState('refresh-cw', `Adding ${querySnapshot.size} notes...`)
             for (const change of querySnapshot.docChanges()) {
+                console.info('[Hints] Processing change', change);
+                const strategy = this.settings.appendToDailyNote
+                    ? new DailyNoteStrategy(this)
+                    : new AppendToFileStrategy(this);
+
                 if (change.type === 'added') {
-                    const data = change.doc.data() as {
-                        text: string;
-                        createdAt: Timestamp;
-                        userId: string;
-                    }
+                    const data = change.doc.data() as PendingNote
 
                     const content = this.settings.appendTemplate
                         .replace('{{date}}', moment(data.createdAt.toDate()).format(this.settings.dateFormat))
                         .replace('{{time}}', moment(data.createdAt.toDate()).format(this.settings.timeFormat))
                         .replace('{{content}}', data.text)
 
-                    await this.app.vault.append(appendFile, `\n${content}`)
+                    const file = await strategy.resolveFile(data.createdAt.toDate())
+                    await this.app.vault.append(file, `\n${content}`)
 
                     await deleteDoc(change.doc.ref)
                 }

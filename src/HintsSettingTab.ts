@@ -2,8 +2,11 @@ import {MomentFormatComponent, PluginSettingTab, Setting, TextAreaComponent, Pla
 import {getAuth} from "@firebase/auth";
 import HintsPlugin from "../main";
 import {FileSuggestModal} from "./FileSuggestModal";
+import {appHasDailyNotesPluginLoaded, getDailyNoteSettings} from "obsidian-daily-notes-interface";
 
 export class HintsSettingTab extends PluginSettingTab {
+    private authUnsubscriber: (() => void) | undefined;
+
     constructor(private plugin: HintsPlugin) {
         super(plugin.app, plugin);
     }
@@ -13,6 +16,12 @@ export class HintsSettingTab extends PluginSettingTab {
         containerEl.empty();
 
         const auth = getAuth(this.plugin.firebaseApp);
+
+        if (!this.authUnsubscriber) {
+            this.authUnsubscriber = auth.onAuthStateChanged(() => {
+                this.display();
+            })
+        }
 
         if (auth.currentUser) {
             containerEl.createEl('h3', {text: 'Account'});
@@ -31,26 +40,48 @@ export class HintsSettingTab extends PluginSettingTab {
                     cb.setButtonText("Logout")
                         .onClick(async () => {
                             await auth.signOut()
-                            this.display()
                         });
                 });
 
             containerEl.createEl('h3', {text: 'General settings'});
-            new Setting(containerEl)
-                .setName('File to append')
-                .addText((cb) => {
-                    cb.setValue(this.plugin.settings.appendPath ?? 'Select file')
 
-                    cb.inputEl.setAttr('readonly', 'readonly')
-                    cb.inputEl.onclick = () => {
-                        const modal = new FileSuggestModal(this.plugin, async (file) => {
-                            this.plugin.settings.appendPath = file.path
+            if (appHasDailyNotesPluginLoaded()) {
+                const dailyNoteSettings = getDailyNoteSettings();
+                new Setting(containerEl)
+                    .setName('Append to daily note')
+                    .addToggle((cb) => {
+                        cb.setValue(this.plugin.settings.appendToDailyNote)
+                        cb.onChange(async (value) => {
+                            this.plugin.settings.appendToDailyNote = value
                             await this.plugin.saveSettings()
                             this.display()
                         })
-                        modal.open();
-                    }
-                })
+                    })
+                    .then((setting) => {
+                        setting.descEl.appendChild(createFragment(frag => {
+                            frag.createSpan({text: 'Append to daily note: '});
+                            frag.createEl('b', {cls: 'u-pop', text: `${dailyNoteSettings.folder}/${dailyNoteSettings.format}`})
+                        }))
+                    })
+            }
+
+            if (!this.plugin.settings.appendToDailyNote) {
+                new Setting(containerEl)
+                    .setName('Append to file')
+                    .addText((cb) => {
+                        cb.setValue(this.plugin.settings.appendPath ?? 'Select file')
+
+                        cb.inputEl.setAttr('readonly', 'readonly')
+                        cb.inputEl.onclick = () => {
+                            const modal = new FileSuggestModal(this.plugin, async (file) => {
+                                this.plugin.settings.appendPath = file.path
+                                await this.plugin.saveSettings()
+                                this.display()
+                            })
+                            modal.open();
+                        }
+                    })
+            }
 
             new Setting(containerEl)
                 .setName('Template')
@@ -105,7 +136,7 @@ export class HintsSettingTab extends PluginSettingTab {
                 containerEl.createEl('h3', {text: 'Appearance'});
                 new Setting(containerEl)
                     .setName('Show in status bar')
-                    .setDesc('Show Hints icon in status bar, that shows current synchronization status.')
+                    .setDesc('Show Hints icon in status bar')
                     .addToggle((cb) => {
                         cb.setValue(this.plugin.settings.showInStatusBar)
                         cb.onChange(async (value) => {
@@ -127,6 +158,11 @@ export class HintsSettingTab extends PluginSettingTab {
                         });
                 });
         }
+    }
+
+    hide(): any {
+        this.authUnsubscriber?.();
+        return super.hide();
     }
 }
 
