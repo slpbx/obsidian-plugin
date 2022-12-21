@@ -65,7 +65,7 @@ export class HintsSettingTab extends PluginSettingTab {
                     })
             }
 
-            if (!this.plugin.settings.appendToDailyNote) {
+            if (!this.plugin.settings.appendToDailyNote || !appHasDailyNotesPluginLoaded()) {
                 new Setting(containerEl)
                     .setName('Append to file')
                     .addText((cb) => {

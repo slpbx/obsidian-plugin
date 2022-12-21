@@ -9,6 +9,7 @@ import {collection, getFirestore, onSnapshot, where, query, deleteDoc, orderBy} 
 import {PendingNote} from "./src/PendingNote";
 import {DailyNoteStrategy} from "./src/AppendStrategy/DailyNoteStrategy";
 import {AppendToFileStrategy} from "./src/AppendStrategy/AppendToFileStrategy";
+import {appHasDailyNotesPluginLoaded} from "obsidian-daily-notes-interface";
 
 interface HintsSettings {
     appendToDailyNote: boolean;
@@ -100,7 +101,7 @@ export default class HintsPlugin extends Plugin {
             this.statusBar.updateState('refresh-cw', `Adding ${querySnapshot.size} notes...`)
             for (const change of querySnapshot.docChanges()) {
                 console.info('[Hints] Processing change', change);
-                const strategy = this.settings.appendToDailyNote
+                const strategy = this.settings.appendToDailyNote && appHasDailyNotesPluginLoaded()
                     ? new DailyNoteStrategy(this)
                     : new AppendToFileStrategy(this);
 
