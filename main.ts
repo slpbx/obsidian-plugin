@@ -23,7 +23,7 @@ interface HintsSettings {
 const DEFAULT_SETTINGS: HintsSettings = {
     appendToDailyNote: false,
     appendPath: null,
-    appendTemplate: '\n---\n#### {{date}}\n{{content}}',
+    appendTemplate: '\n---\n#### captured [[{{date}}]] at `{{time}}`\n\n{{content}}\n',
     dateFormat: 'YYYY-MM-DD [at] HH:mm',
     timeFormat: 'HH:mm',
     showInStatusBar: true,

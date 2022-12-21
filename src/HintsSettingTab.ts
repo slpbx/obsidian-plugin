@@ -40,6 +40,7 @@ export class HintsSettingTab extends PluginSettingTab {
                     cb.setButtonText("Logout")
                         .onClick(async () => {
                             await auth.signOut()
+                            this.display();
                         });
                 });
 
@@ -103,7 +104,7 @@ export class HintsSettingTab extends PluginSettingTab {
                 .then(cb => {
                     cb.inputEl.style.minWidth = '100%';
                     cb.inputEl.style.maxWidth = '100%';
-                    cb.inputEl.style.minHeight = '80px';
+                    cb.inputEl.style.minHeight = '100px';
                 })
 
             new Setting(containerEl)

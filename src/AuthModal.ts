@@ -51,7 +51,7 @@ export class AuthModal extends Modal {
             contentEl.createEl('p', { text: 'Looks like authorization token is expired. Please try again' });
         } else if (this._connected) {
             contentEl.createEl('p', { text: 'You have successfully connected to Hints!' });
-            contentEl.createEl('p', { text: 'Now continue to the Hints website' });
+            contentEl.createEl('p', { text: 'Go back to Hints app and click `Publish Flow`' });
         }else {
             contentEl.createEl('p', { text: 'Loading...' });
         }
