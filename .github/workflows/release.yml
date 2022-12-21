@@ -4,13 +4,14 @@ on:
     push:
         tags:
             - "*"
+    workflow_dispatch:
 
 env:
     PLUGIN_NAME: hints-plugin
 
 jobs:
     build:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-22.04
 
         steps:
             - uses: actions/checkout@v2
