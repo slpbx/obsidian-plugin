@@ -52,7 +52,7 @@ export class AuthModal extends Modal {
         } else if (this._connected) {
             contentEl.createEl('p', { text: 'You have successfully connected to Hints!' });
             contentEl.createEl('p', { text: 'Go back to Hints app and click `Publish Flow`' });
-        }else {
+        } else {
             contentEl.createEl('p', { text: 'Loading...' });
         }
     }

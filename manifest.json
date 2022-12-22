@@ -3,7 +3,7 @@
 	"name": "Hints Flow",
 	"version": "1.0.2",
 	"minAppVersion": "0.15.0",
-	"description": "Save data directly to Obsidian with specified template. Capture from Telegram, WhatsApp, Slack, Email, SMS, Raycast and more.",
+	"description": "Save data directly to Obsidian with a specified template. Capture from Telegram, WhatsApp, Slack, Email, SMS, Raycast and more.",
 	"author": "Hints",
 	"authorUrl": "https://hints.so",
 	"isDesktopOnly": false
