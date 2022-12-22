@@ -1,7 +1,7 @@
 {
 	"id": "hints-plugin",
 	"name": "Hints Flow",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"minAppVersion": "0.15.0",
 	"description": "Save data directly to Obsidian with a specified template. Capture from Telegram, WhatsApp, Slack, Email, SMS, Raycast and more.",
 	"author": "Hints",

@@ -13,7 +13,7 @@ Learn more about Hints integrations with Notion, Calendar, ClickUp, Trello, HubS
 
 ### How to install
 
-- Install the Hints Flow plugin form Obsidian marketplace or manually
+- Install the Hints Flow plugin from Obsidian marketplace or manually
     - for manual installation copy `hints-plugin` folder from the latest [releases](https://github.com/slpbx/obsidian-plugin/releases/latest) to your vault's plugins folder, under `[YourVaultFolder]/.obsidian/plugins/`.
     - to show hidden files open the Finder and press `Command + Shift + . (period)`
 - Go to [Hints Web App](https://i.hints.so/) and create free account
@@ -26,6 +26,6 @@ Learn more about Hints integrations with Notion, Calendar, ClickUp, Trello, HubS
 ### How to use
 - Forward or send any message to Hints bot via Telegram, WhatsApp or Slack
 - Send via Email, SMS or capture with RayCast
-- Review advances use-cases and examples on [Hints.so](https://hints.so/flows)
+- Review advanced use-cases and examples on [Hints.so](https://hints.so/flows)
 
 > Don’t just store knowledge, move it forward!
