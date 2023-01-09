@@ -33,7 +33,7 @@ export class HintsSettingTab extends PluginSettingTab {
                         .setCta()
                         .setButtonText("Open Hints")
                         .onClick(async () => {
-                            window.open('https://i.hints.so/')
+                            window.open('https://i.hints.so/', '_blank')
                         });
                 })
                 .addButton((cb) => {
@@ -155,7 +155,7 @@ export class HintsSettingTab extends PluginSettingTab {
                 .addButton((cb) => {
                     cb.setCta().setButtonText("Go to Hints")
                         .onClick(async () => {
-                            window.open('https://i.hints.so/')
+                            window.open('https://i.hints.so/', '_blank')
                         });
                 });
         }
