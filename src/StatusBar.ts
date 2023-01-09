@@ -15,21 +15,25 @@ export class StatusBar {
         this.element.addClass('mod-clickable');
         this.element.setAttr('aria-label-position', 'top')
 
-        this.iconElement = this.element.createSpan({ text: '' });
-        this.iconElement.style.marginRight = '5px';
+        this.iconElement = this.element.createSpan({ text: '', cls: 'hints-status-bar-icon' });
         this.hintsElement = this.element.createSpan({ text: "Hints" });
 
         this.updateState('refresh-cw', 'Loading...')
     }
 
     updateState(icon: string, description: string | null, options: { forceShow?: boolean; error?: boolean } = {}) {
-        const show = this.plugin.settings.showInStatusBar || options.forceShow
+        const visible = this.plugin.settings.showInStatusBar || options.forceShow
 
         setIcon(this.iconElement, icon);
         this.element.setAttr('aria-label', description ?? '')
-        this.element.style.color = options.error ? 'var(--text-error)' : '';
-        this.element.style.padding = show ? '0 var(--size-2-2)' : '0';
-        this.element.style.display = show ? '' : 'none';
+        this.element.removeClass('hints-status-bar-error', 'hints-status-bar-hidden')
+
+        if (options.error) {
+            this.element.addClass('hints-status-bar-error');
+        }
+        if (!visible) {
+            this.element.addClass('hints-status-bar-hidden');
+        }
     }
 
     setDefaultState() {

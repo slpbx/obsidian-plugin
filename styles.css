@@ -1,8 +1,12 @@
-/*
+.hints-status-bar-icon {
+    margin-right: 5px;
+}
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+.hints-status-bar-error {
+    /*noinspection CssUnresolvedCustomProperty*/
+    color: var(--text-error);
+}
 
-If your plugin does not need CSS, delete this file.
-
-*/
+.hints-status-bar-hidden {
+    display: none;
+}
