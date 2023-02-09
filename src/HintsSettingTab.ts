@@ -81,7 +81,11 @@ export class HintsSettingTab extends PluginSettingTab {
                             })
                             modal.open();
                         }
-                    })
+                    }).then(cb => {
+                        if (!this.plugin.settings.appendPath) {
+                            cb.settingEl.addClass('hints-settings-has-error')
+                        }
+                })
             }
 
             new Setting(containerEl)

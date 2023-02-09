@@ -10,3 +10,51 @@
 .hints-status-bar-hidden {
     display: none;
 }
+
+.hints-auth-modal-loader {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    margin: 40px 0;
+}
+.hints-auth-modal-loader > i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: spin-animation 0.8s infinite linear;
+}
+.hints-auth-modal-loader > span {
+    margin-left: 7px;
+}
+
+.hints-auth-modal-header {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin: 0;
+}
+.hints-auth-modal-header > i {
+    margin-right: 7px;
+    margin-top: 2px;
+    /*noinspection CssUnresolvedCustomProperty*/
+    color: var(--text-success);
+}
+.hints-auth-modal-button {
+    margin-top: 7px;
+    padding: 18px 30px;
+}
+
+.hints-settings-has-error .setting-item-control input {
+    /*noinspection CssUnresolvedCustomProperty*/
+    border-color: var(--background-modifier-error);
+}
+
+@keyframes spin-animation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

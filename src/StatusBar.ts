@@ -1,6 +1,7 @@
 import HintsPlugin from "../main";
 import {setIcon} from "obsidian";
 import {getAuth} from "@firebase/auth";
+import {openPluginSettings} from "./utils/openPluginSettings";
 
 export class StatusBar {
 
@@ -14,6 +15,7 @@ export class StatusBar {
 
         this.element.addClass('mod-clickable');
         this.element.setAttr('aria-label-position', 'top')
+        this.element.onclick = () => { openPluginSettings(plugin.app) }
 
         this.iconElement = this.element.createSpan({ text: '', cls: 'hints-status-bar-icon' });
         this.hintsElement = this.element.createSpan({ text: "Hints" });

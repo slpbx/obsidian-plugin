@@ -1,7 +1,8 @@
-import {Modal} from "obsidian";
+import {ButtonComponent, Modal, setIcon} from "obsidian";
 import {getAuth, signInWithCustomToken} from "@firebase/auth";
 import {doc, getFirestore, updateDoc} from "@firebase/firestore";
 import HintsPlugin from "../main";
+import {openPluginSettings} from "./utils/openPluginSettings";
 
 export class AuthModal extends Modal {
     private _connected = false;
@@ -48,12 +49,28 @@ export class AuthModal extends Modal {
         let { contentEl } = this;
         contentEl.empty();
         if (this._error) {
-            contentEl.createEl('p', { text: 'Looks like authorization token is expired. Please try again' });
-        } else if (this._connected) {
-            contentEl.createEl('p', { text: 'You have successfully connected to Hints!' });
-            contentEl.createEl('p', { text: 'Go back to Hints app and click `Publish Flow`' });
+            contentEl.createEl('p', {text: 'Looks like authorization token is expired. Please try again'});
+        } else if (!this._connected) {
+            contentEl.createEl('div', {cls: 'hints-auth-modal-loader', text: createFragment((frag) => {
+                const iconEl = frag.createEl('i')
+                setIcon(iconEl, 'loader-2');
+                frag.createSpan({text: 'Loading...'});
+            })});
         } else {
-            contentEl.createEl('p', { text: 'Loading...' });
+            contentEl.createEl('h3', {cls: 'hints-auth-modal-header', text: createFragment((frag) => {
+                const iconEl = frag.createEl('i')
+                setIcon(iconEl, 'check-circle-2');
+                frag.createSpan({text: 'You have successfully connected to Hints!'});
+            })});
+            contentEl.createEl('p', {text: 'To finish the setup, please click on the "Setup Plugin" button. Then, choose the file where you want your data to be saved by selecting it in the "Append to File" or "Append to Daily Notes" option.'});
+            new ButtonComponent(contentEl)
+                .setCta()
+                .setButtonText("Setup plugin")
+                .setClass('hints-auth-modal-button')
+                .onClick(() => {
+                    this.close()
+                    openPluginSettings(this.plugin.app)
+                });
         }
     }
 }
