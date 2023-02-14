@@ -29,6 +29,8 @@ const DEFAULT_SETTINGS: HintsSettings = {
     showInStatusBar: true,
 }
 
+const IMAGE_URL_REGEXP = /^https?:\/\/\S+\.(jpeg|jpg|png|gif|webm)(\?\S+)?$/gm
+
 const firebaseConfig: FirebaseOptions = {
 	apiKey: 'AIzaSyCcp8pZoqG2Ihe4uyeEFKqPIkNtqf6iuaw',
 	authDomain: 'slipbox-6f705.firebaseapp.com',
@@ -112,6 +114,7 @@ export default class HintsPlugin extends Plugin {
                         .replace('{{date}}', moment(data.createdAt.toDate()).format(this.settings.dateFormat))
                         .replace('{{time}}', moment(data.createdAt.toDate()).format(this.settings.timeFormat))
                         .replace('{{content}}', data.text)
+                        .replace(IMAGE_URL_REGEXP, '![]($&)');
 
                     const file = await strategy.resolveFile(data.createdAt.toDate())
                     await this.app.vault.append(file, `\n${content}`)
