@@ -24,5 +24,8 @@
 	"dependencies": {
 		"firebase": "^9.15.0",
 		"obsidian-daily-notes-interface": "^0.9.4"
+	},
+	"resolutions": {
+        "obsidian": "^1.1.1"
 	}
 }
