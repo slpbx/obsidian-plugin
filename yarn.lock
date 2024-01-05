@@ -1029,7 +1029,7 @@ obsidian-daily-notes-interface@^0.9.4:
     obsidian obsidianmd/obsidian-api#master
     tslib "2.1.0"
 
-obsidian@^1.1.1, "obsidian@github:obsidianmd/obsidian-api#master", obsidian@latest:
+obsidian@^1.1.1, obsidian@latest, obsidian@obsidianmd/obsidian-api#master:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/obsidian/-/obsidian-1.1.1.tgz#7cce6f19a6dd1cc5ec7e9f7dff8ea3ceacf2e2c3"
   integrity sha512-GcxhsHNkPEkwHEjeyitfYNBcQuYGeAHFs1pEpZIv0CnzSfui8p8bPLm2YKLgcg20B764770B1sYGtxCvk9ptxg==
