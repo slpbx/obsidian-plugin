@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-sample-plugin",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
 	"main": "main.js",
 	"scripts": {
@@ -26,6 +26,6 @@
 		"obsidian-daily-notes-interface": "^0.9.4"
 	},
 	"resolutions": {
-        "obsidian": "^1.1.1"
+		"obsidian": "^1.1.1"
 	}
 }
